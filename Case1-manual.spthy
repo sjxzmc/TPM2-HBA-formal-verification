@@ -1,0 +1,2214 @@
+theory apiHBA1 begin
+
+// Function signature and definition of the equational theory E
+
+functions: HMAC/2, KDF/1, adec/2, aenc/2, fst/1, pair/2, pk/1,
+           sdec/2, senc/2, snd/1
+equations:
+    adec(aenc(x.1, pk(x.2)), x.2) = x.1,
+    fst(<x.1, x.2>) = x.1,
+    sdec(senc(x.1, x.2), x.2) = x.1,
+    snd(<x.1, x.2>) = x.2
+
+rule (modulo E) 0:
+   [ ] --[ Init( ) ]-> [ State_0( ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_hSa0:
+   [ State_0( ), Fr( hSa ) ] --> [ State_01( hSa ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nta01:
+   [ State_01( hSa ), Fr( nta ) ] --> [ State_011( hSa, nta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_aba011:
+   [ State_011( hSa, nta ), Fr( aba ) ]
+  -->
+   [ State_0111( aba, hSa, nta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_sta0111:
+   [ State_0111( aba, hSa, nta ), Fr( sta ) ]
+  -->
+   [ State_01111( aba, hSa, nta, sta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___Session___hSa___nta__aba__sta_01111:
+   [ State_01111( aba, hSa, nta, sta ) ]
+  --[ Insert( <'Session', hSa>, <nta, aba, sta> ) ]->
+   [ State_011111( aba, hSa, nta, sta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__hSa__nta_011111:
+   [ State_011111( aba, hSa, nta, sta ) ]
+  -->
+   [ Out( <hSa, nta> ), State_0111111( aba, hSa, nta, sta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_hSe0111111:
+   [ State_0111111( aba, hSa, nta, sta ), Fr( hSe ) ]
+  -->
+   [ State_01111111( aba, hSa, hSe, nta, sta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nte01111111:
+   [ State_01111111( aba, hSa, hSe, nta, sta ), Fr( nte ) ]
+  -->
+   [ State_011111111( aba, hSa, hSe, nta, nte, sta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_abe011111111:
+   [ State_011111111( aba, hSa, hSe, nta, nte, sta ), Fr( abe ) ]
+  -->
+   [ State_0111111111( aba, abe, hSa, hSe, nta, nte, sta ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_ste0111111111:
+   [ State_0111111111( aba, abe, hSa, hSe, nta, nte, sta ), Fr( ste )
+   ]
+  -->
+   [ State_01111111111( aba, abe, hSa, hSe, nta, nte, sta, ste ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___Session___hSe___nte__abe__ste_01111111111:
+   [ State_01111111111( aba, abe, hSa, hSe, nta, nte, sta, ste ) ]
+  --[ Insert( <'Session', hSe>, <nte, abe, ste> ) ]->
+   [ State_011111111111( aba, abe, hSa, hSe, nta, nte, sta, ste ) ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__hSe__nte_011111111111:
+   [ State_011111111111( aba, abe, hSa, hSe, nta, nte, sta, ste ) ]
+  -->
+   [
+   Out( <hSe, nte> ),
+   State_0111111111111( aba, abe, hSa, hSe, nta, nte, sta, ste )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_hnil0111111111111:
+   [
+   State_0111111111111( aba, abe, hSa, hSe, nta, nte, sta, ste ),
+   Fr( hnil )
+   ]
+  -->
+   [
+   State_01111111111111( aba, abe, hSa, hSe, hnil, nta, nte, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___Auth___hnil___null_01111111111111:
+   [
+   State_01111111111111( aba, abe, hSa, hSe, hnil, nta, nte, sta, ste
+   )
+   ]
+  --[ Insert( <'Auth', hnil>, 'null' ) ]->
+   [
+   State_011111111111111( aba, abe, hSa, hSe, hnil, nta, nte, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_hPr011111111111111:
+   [
+   State_011111111111111( aba, abe, hSa, hSe, hnil, nta, nte, sta, ste
+   ),
+   Fr( hPr )
+   ]
+  -->
+   [
+   State_0111111111111111( aba, abe, hPr, hSa, hSe, hnil, nta, nte,
+                           sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_aPr0111111111111111:
+   [
+   State_0111111111111111( aba, abe, hPr, hSa, hSe, hnil, nta, nte,
+                           sta, ste
+   ),
+   Fr( aPr )
+   ]
+  -->
+   [
+   State_01111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil, nta,
+                            nte, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_kPr01111111111111111:
+   [
+   State_01111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil, nta,
+                            nte, sta, ste
+   ),
+   Fr( kPr )
+   ]
+  -->
+   [
+   State_011111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil, kPr,
+                             nta, nte, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_sPr011111111111111111:
+   [
+   State_011111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil, kPr,
+                             nta, nte, sta, ste
+   ),
+   Fr( sPr )
+   ]
+  -->
+   [
+   State_0111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil, kPr,
+                              nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___Auth___hPr__aPr0111111111111111111:
+   [
+   State_0111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil, kPr,
+                              nta, nte, sPr, sta, ste
+   )
+   ]
+  --[ Insert( <'Auth', hPr>, aPr ) ]->
+   [
+   State_01111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                               kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___KeyV___hPr__kPr01111111111111111111:
+   [
+   State_01111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                               kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  --[ Insert( <'KeyV', hPr>, kPr ) ]->
+   [
+   State_011111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___SeedV___hPr__sPr011111111111111111111:
+   [
+   State_011111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  --[ Insert( <'SeedV', hPr>, sPr ) ]->
+   [
+   State_0111111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                 kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) event_ObjSeed_sPr_0111111111111111111111:
+   [
+   State_0111111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                 kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  --[ Event( ), ObjSeed( sPr ) ]->
+   [
+   State_01111111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                  kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__hPr__pk_kPr___aPr_01111111111111111111111:
+   [
+   State_01111111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                  kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   Out( <hPr, pk(kPr), aPr> ),
+   State_011111111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                   kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__aba__sta_011111111111111111111111:
+   [
+   State_011111111111111111111111( aPr, aba, abe, hPr, hSa, hSe, hnil,
+                                   kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   Out( <aba, sta> ),
+   !State_0111111111111111111111111( aPr, aba, abe, hPr, hSa, hSe,
+                                     hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Rep0111111111111111111111111:
+   [
+   !State_0111111111111111111111111( aPr, aba, abe, hPr, hSa, hSe,
+                                     hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   State_01111111111111111111111111( aPr, aba, abe, hPr, hSa, hSe,
+                                     hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Par01111111111111111111111111:
+   [
+   State_01111111111111111111111111( aPr, aba, abe, hPr, hSa, hSe,
+                                     hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   State_011111111111111111111111111( aPr, aba, abe, hPr, hSa, hSe,
+                                      hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   !State_011111111111111111111111112( aPr, aba, abe, hPr, hSa, hSe,
+                                       hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_a011111111111111111111111111:
+   [
+   State_011111111111111111111111111( aPr, aba, abe, hPr, hSa, hSe,
+                                      hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   Fr( a )
+   ]
+  -->
+   [
+   State_0111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                       hSe, hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) event_NewAuth_a_0111111111111111111111111111:
+   [
+   State_0111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                       hSe, hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  --[ Event( ), NewAuth( a ) ]->
+   [
+   State_01111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                        hSe, hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nce01111111111111111111111111111:
+   [
+   State_01111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                        hSe, hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   Fr( nce )
+   ]
+  -->
+   [
+   State_011111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                         hSe, hnil, kPr, nce, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nca011111111111111111111111111111:
+   [
+   State_011111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                         hSe, hnil, kPr, nce, nta, nte, sPr, sta, ste
+   ),
+   Fr( nca )
+   ]
+  -->
+   [
+   State_0111111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__nca__nce__senc_a__KDF__nce__nte__abe__ste____0111111111111111111111111111111:
+   [
+   State_0111111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   Out( <nca, nce, senc(a, KDF(<nce, nte, abe, ste>))> ),
+   State_01111111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out_HMAC__aPr__aba__sta_____CmdC____nca___nta__nte_____pk_kPr___senc_a__KDF__nce__nte__abe__ste______01111111111111111111111111111111:
+   [
+   State_01111111111111111111111111111111( a, aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   Out( HMAC(<aPr, aba, sta>,
+             <'CmdC', <nca, nta, nte>, pk(kPr), 
+              senc(a, KDF(<nce, nte, abe, ste>))>)
+   ),
+   State_011111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                            hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in__xkBlob__xpbk__xnta__xnte__xahC_011111111111111111111111111111111:
+   [
+   State_011111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                            hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste
+   ),
+   In( <xkBlob, xpbk, xnta, xnte, xahC> )
+   ]
+  -->
+   [
+   State_0111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                             hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste,
+                                             xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) if_eq_xahC__HMAC__aPr__aba__sta_____RepC____xnta__nca____xpbk__xkBlob____0111111111111111111111111111111111:
+   [
+   State_0111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                             hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste,
+                                             xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+  --[
+  Pred_eq( xahC,
+           HMAC(<aPr, aba, sta>, <'RepC', <xnta, nca>, xpbk, xkBlob>)
+  )
+  ]->
+   [
+   State_01111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta,
+                                              ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__if_eq_xahC__HMAC__aPr__aba__sta_____RepC____xnta__nca____xpbk__xkBlob____0111111111111111111111111111111111:
+   [
+   State_0111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                             hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta, ste,
+                                             xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+  --[
+  Pred_not_eq( xahC,
+               HMAC(<aPr, aba, sta>, <'RepC', <xnta, nca>, xpbk, xkBlob>)
+  )
+  ]->
+   [
+   State_01111111111111111111111111111111112( a, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta,
+                                              ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) event_UserCreate_hPr__a_01111111111111111111111111111111111:
+   [
+   State_01111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta,
+                                              ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+  --[ Event( ), UserCreate( hPr, a ) ]->
+   [
+   State_011111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta,
+                                               ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nnca011111111111111111111111111111111111:
+   [
+   State_011111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta,
+                                               ste, xahC, xkBlob, xnta, xnte, xpbk
+   ),
+   Fr( nnca )
+   ]
+  -->
+   [
+   State_0111111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                                hSa, hSe, hnil, kPr, nca, nce, nnca, nta, nte, sPr,
+                                                sta, ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out_nnca0111111111111111111111111111111111111:
+   [
+   State_0111111111111111111111111111111111111( a, aPr, aba, abe, hPr,
+                                                hSa, hSe, hnil, kPr, nca, nce, nnca, nta, nte, sPr,
+                                                sta, ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+  -->
+   [
+   Out( nnca ),
+   State_01111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta, nte,
+                                                 sPr, sta, ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out_HMAC__aPr__aba__sta_____CmdL____nnca__nta____pk_kPr___xkBlob___01111111111111111111111111111111111111:
+   [
+   State_01111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta, nte,
+                                                 sPr, sta, ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+  -->
+   [
+   Out( HMAC(<aPr, aba, sta>, <'CmdL', <nnca, nta>, pk(kPr), xkBlob>)
+   ),
+   State_011111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                  hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                  nte, sPr, sta, ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in__xhO__xahL__xnnta_011111111111111111111111111111111111111:
+   [
+   State_011111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                  hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                  nte, sPr, sta, ste, xahC, xkBlob, xnta, xnte, xpbk
+   ),
+   In( <xhO, xahL, xnnta> )
+   ]
+  -->
+   [
+   State_0111111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                   nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                   xnnta, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) if_eq_xahL__HMAC__aPr__aba__sta_____RepL____xnnta__nnca____xpbk__xhO____0111111111111111111111111111111111111111:
+   [
+   State_0111111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                   nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                   xnnta, xnta, xnte, xpbk
+   )
+   ]
+  --[
+  Pred_eq( xahL,
+           HMAC(<aPr, aba, sta>, <'RepL', <xnnta, nnca>, xpbk, xhO>)
+  )
+  ]->
+   [
+   State_01111111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                    nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                    xnnta, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__if_eq_xahL__HMAC__aPr__aba__sta_____RepL____xnnta__nnca____xpbk__xhO____0111111111111111111111111111111111111111:
+   [
+   State_0111111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                   nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                   xnnta, xnta, xnte, xpbk
+   )
+   ]
+  --[
+  Pred_not_eq( xahL,
+               HMAC(<aPr, aba, sta>, <'RepL', <xnnta, nnca>, xpbk, xhO>)
+  )
+  ]->
+   [
+   State_01111111111111111111111111111111111111112( a, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                    nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                    xnnta, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) event_UserLoad_hPr__xhO__a_01111111111111111111111111111111111111111:
+   [
+   State_01111111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                    nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                    xnnta, xnta, xnte, xpbk
+   )
+   ]
+  --[ Event( ), UserLoad( hPr, xhO, a ) ]->
+   [
+   State_011111111111111111111111111111111111111111( a, aPr, aba, abe,
+                                                     hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                     nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                     xnnta, xnta, xnte, xpbk
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Zero01111111111111111111111111111111111111112:
+   [
+   State_01111111111111111111111111111111111111112( a, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kPr, nca, nce, nnca, nta,
+                                                    nte, sPr, sta, ste, xahC, xahL, xhO, xkBlob,
+                                                    xnnta, xnta, xnte, xpbk
+   )
+   ]
+  -->
+   [ ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Zero01111111111111111111111111111111112:
+   [
+   State_01111111111111111111111111111111112( a, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kPr, nca, nce, nta, nte, sPr, sta,
+                                              ste, xahC, xkBlob, xnta, xnte, xpbk
+   )
+   ]
+  -->
+   [ ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Rep011111111111111111111111112:
+   [
+   !State_011111111111111111111111112( aPr, aba, abe, hPr, hSa, hSe,
+                                       hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   State_0111111111111111111111111121( aPr, aba, abe, hPr, hSa, hSe,
+                                       hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Par0111111111111111111111111121:
+   [
+   State_0111111111111111111111111121( aPr, aba, abe, hPr, hSa, hSe,
+                                       hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   State_01111111111111111111111111211( aPr, aba, abe, hPr, hSa, hSe,
+                                        hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   State_01111111111111111111111111212( aPr, aba, abe, hPr, hSa, hSe,
+                                        hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Par01111111111111111111111111211:
+   [
+   State_01111111111111111111111111211( aPr, aba, abe, hPr, hSa, hSe,
+                                        hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+  -->
+   [
+   State_011111111111111111111111112111( aPr, aba, abe, hPr, hSa, hSe,
+                                         hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   State_011111111111111111111111112112( aPr, aba, abe, hPr, hSa, hSe,
+                                         hnil, kPr, nta, nte, sPr, sta, ste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in__xhSe__xnce__senc_xa__KDF__xnce__xnte__xabe__xste____011111111111111111111111112111:
+   [
+   State_011111111111111111111111112111( aPr, aba, abe, hPr, hSa, hSe,
+                                         hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   In( <xhSe, xnce, senc(xa, KDF(<xnce, xnte, xabe, xste>))> )
+   ]
+  -->
+   [
+   State_0111111111111111111111111121111( aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xabe, xhSe,
+                                          xnce, xnte, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in__xhP__xhSa__xnca_0111111111111111111111111121111:
+   [
+   State_0111111111111111111111111121111( aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xabe, xhSe,
+                                          xnce, xnte, xste
+   ),
+   In( <xhP, xhSa, xnca> )
+   ]
+  -->
+   [
+   State_01111111111111111111111111211111( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xabe, xhP,
+                                           xhSa, xhSe, xnca, xnce, xnte, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in_HMAC__xaP__xaba__xsta_____CmdC____xnca___xnta__xnte_____xpkP__senc_xa__KDF__xnce__xnte__xabe__xste______01111111111111111111111111211111:
+   [
+   State_01111111111111111111111111211111( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xabe, xhP,
+                                           xhSa, xhSe, xnca, xnce, xnte, xste
+   ),
+   In( HMAC(<xaP, xaba, xsta>,
+            <'CmdC', <xnca, xnta, xnte>, xpkP, 
+             senc(xa, KDF(<xnce, xnte, xabe, xste>))>)
+   )
+   ]
+  -->
+   [
+   State_011111111111111111111111112111111( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                            xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP,
+                                            xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___Session___xhSe__as_se011111111111111111111111112111111:
+   [
+   State_011111111111111111111111112111111( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                            xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP,
+                                            xsta, xste
+   )
+   ]
+  --[ IsIn( <'Session', xhSe>, se ) ]->
+   [
+   State_0111111111111111111111111121111111( aPr, aba, abe, hPr, hSa,
+                                             hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                             xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                             xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___Session___xhSe__as_se011111111111111111111111112111111:
+   [
+   State_011111111111111111111111112111111( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                            xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP,
+                                            xsta, xste
+   )
+   ]
+  --[ IsNotSet( <'Session', xhSe> ) ]->
+   [
+   State_0111111111111111111111111121111112( aPr, aba, abe, hPr, hSa,
+                                             hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                             xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP,
+                                             xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) if_eq_se___xnte__xabe__xste__0111111111111111111111111121111111:
+   [
+   State_0111111111111111111111111121111111( aPr, aba, abe, hPr, hSa,
+                                             hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                             xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                             xpkP, xsta, xste
+   )
+   ]
+  --[ Pred_eq( se, <xnte, xabe, xste> ) ]->
+   [
+   State_01111111111111111111111111211111111( aPr, aba, abe, hPr, hSa,
+                                              hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                              xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                              xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__if_eq_se___xnte__xabe__xste__0111111111111111111111111121111111:
+   [
+   State_0111111111111111111111111121111111( aPr, aba, abe, hPr, hSa,
+                                             hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                             xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                             xpkP, xsta, xste
+   )
+   ]
+  --[ Pred_not_eq( se, <xnte, xabe, xste> ) ]->
+   [
+   State_01111111111111111111111111211111112( aPr, aba, abe, hPr, hSa,
+                                              hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                              xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                              xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___Session___xhSa__as_sa01111111111111111111111111211111111:
+   [
+   State_01111111111111111111111111211111111( aPr, aba, abe, hPr, hSa,
+                                              hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                              xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                              xpkP, xsta, xste
+   )
+   ]
+  --[ IsIn( <'Session', xhSa>, sa ) ]->
+   [
+   State_011111111111111111111111112111111111( aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se, sta, ste,
+                                               xa, xaP, xaba, xabe, xhP, xhSa, xhSe, xnca, xnce,
+                                               xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___Session___xhSa__as_sa01111111111111111111111111211111111:
+   [
+   State_01111111111111111111111111211111111( aPr, aba, abe, hPr, hSa,
+                                              hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                              xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                              xpkP, xsta, xste
+   )
+   ]
+  --[ IsNotSet( <'Session', xhSa> ) ]->
+   [
+   State_011111111111111111111111112111111112( aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa,
+                                               xaP, xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta,
+                                               xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___Auth___xhP__as_aP011111111111111111111111112111111111:
+   [
+   State_011111111111111111111111112111111111( aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se, sta, ste,
+                                               xa, xaP, xaba, xabe, xhP, xhSa, xhSe, xnca, xnce,
+                                               xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ IsIn( <'Auth', xhP>, aP ) ]->
+   [
+   State_0111111111111111111111111121111111111( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se,
+                                                sta, ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___Auth___xhP__as_aP011111111111111111111111112111111111:
+   [
+   State_011111111111111111111111112111111111( aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se, sta, ste,
+                                               xa, xaP, xaba, xabe, xhP, xhSa, xhSe, xnca, xnce,
+                                               xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ IsNotSet( <'Auth', xhP> ) ]->
+   [
+   State_0111111111111111111111111121111111112( aPr, aba, abe, hPr,
+                                                hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se, sta,
+                                                ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe, xnca,
+                                                xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___KeyV___xhP__as_kP0111111111111111111111111121111111111:
+   [
+   State_0111111111111111111111111121111111111( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se,
+                                                sta, ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ IsIn( <'KeyV', xhP>, kP ) ]->
+   [
+   State_01111111111111111111111111211111111111( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                 se, sta, ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                 xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___KeyV___xhP__as_kP0111111111111111111111111121111111111:
+   [
+   State_0111111111111111111111111121111111111( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se,
+                                                sta, ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ IsNotSet( <'KeyV', xhP> ) ]->
+   [
+   State_01111111111111111111111111211111111112( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kPr, nta, nte, sPr, sa, se,
+                                                 sta, ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                 xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___SeedV___xhP__as_sdP01111111111111111111111111211111111111:
+   [
+   State_01111111111111111111111111211111111111( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                 se, sta, ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                 xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ IsIn( <'SeedV', xhP>, sdP ) ]->
+   [
+   State_011111111111111111111111112111111111111( aP, aPr, aba, abe,
+                                                  hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                  sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP, xhSa,
+                                                  xhSe, xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___SeedV___xhP__as_sdP01111111111111111111111111211111111111:
+   [
+   State_01111111111111111111111111211111111111( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                 se, sta, ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                 xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ IsNotSet( <'SeedV', xhP> ) ]->
+   [
+   State_011111111111111111111111112111111111112( aP, aPr, aba, abe,
+                                                  hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                  se, sta, ste, xa, xaP, xaba, xabe, xhP, xhSa,
+                                                  xhSe, xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) if_eq_sa___xnta__xaba__xsta__011111111111111111111111112111111111111:
+   [
+   State_011111111111111111111111112111111111111( aP, aPr, aba, abe,
+                                                  hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                  sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP, xhSa,
+                                                  xhSe, xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ Pred_eq( sa, <xnta, xaba, xsta> ) ]->
+   [
+   State_0111111111111111111111111121111111111111( aP, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                   sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                   xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                   xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__if_eq_sa___xnta__xaba__xsta__011111111111111111111111112111111111111:
+   [
+   State_011111111111111111111111112111111111111( aP, aPr, aba, abe,
+                                                  hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                  sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP, xhSa,
+                                                  xhSe, xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ Pred_not_eq( sa, <xnta, xaba, xsta> ) ]->
+   [
+   State_0111111111111111111111111121111111111112( aP, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                   sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                   xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                   xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) if_eq__pk_kP___aP____xpkP__xaP__0111111111111111111111111121111111111111:
+   [
+   State_0111111111111111111111111121111111111111( aP, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                   sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                   xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                   xste
+   )
+   ]
+  --[ Pred_eq( <pk(kP), aP>, <xpkP, xaP> ) ]->
+   [
+   State_01111111111111111111111111211111111111111( aP, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                    sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                    xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                    xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__if_eq__pk_kP___aP____xpkP__xaP__0111111111111111111111111121111111111111:
+   [
+   State_0111111111111111111111111121111111111111( aP, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                   sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                   xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                   xste
+   )
+   ]
+  --[ Pred_not_eq( <pk(kP), aP>, <xpkP, xaP> ) ]->
+   [
+   State_01111111111111111111111111211111111111112( aP, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                    sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                    xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                    xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_k01111111111111111111111111211111111111111:
+   [
+   State_01111111111111111111111111211111111111111( aP, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                    sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                    xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                    xste
+   ),
+   Fr( k )
+   ]
+  -->
+   [
+   State_011111111111111111111111112111111111111111( aP, aPr, aba,
+                                                     abe, hPr, hSa, hSe, hnil, k, kP, kPr, nta, nte,
+                                                     sPr, sa, sdP, se, sta, ste, xa, xaP, xaba,
+                                                     xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                                     xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_s011111111111111111111111112111111111111111:
+   [
+   State_011111111111111111111111112111111111111111( aP, aPr, aba,
+                                                     abe, hPr, hSa, hSe, hnil, k, kP, kPr, nta, nte,
+                                                     sPr, sa, sdP, se, sta, ste, xa, xaP, xaba,
+                                                     xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                                     xpkP, xsta, xste
+   ),
+   Fr( s )
+   ]
+  -->
+   [
+   State_0111111111111111111111111121111111111111111( aP, aPr, aba,
+                                                      abe, hPr, hSa, hSe, hnil, k, kP, kPr, nta,
+                                                      nte, s, sPr, sa, sdP, se, sta, ste, xa, xaP,
+                                                      xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta,
+                                                      xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nnta0111111111111111111111111121111111111111111:
+   [
+   State_0111111111111111111111111121111111111111111( aP, aPr, aba,
+                                                      abe, hPr, hSa, hSe, hnil, k, kP, kPr, nta,
+                                                      nte, s, sPr, sa, sdP, se, sta, ste, xa, xaP,
+                                                      xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta,
+                                                      xnte, xpkP, xsta, xste
+   ),
+   Fr( nnta )
+   ]
+  -->
+   [
+   State_01111111111111111111111111211111111111111111( aP, aPr, aba,
+                                                       abe, hPr, hSa, hSe, hnil, k, kP, kPr, nnta,
+                                                       nta, nte, s, sPr, sa, sdP, se, sta, ste, xa,
+                                                       xaP, xaba, xabe, xhP, xhSa, xhSe, xnca, xnce,
+                                                       xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nnte01111111111111111111111111211111111111111111:
+   [
+   State_01111111111111111111111111211111111111111111( aP, aPr, aba,
+                                                       abe, hPr, hSa, hSe, hnil, k, kP, kPr, nnta,
+                                                       nta, nte, s, sPr, sa, sdP, se, sta, ste, xa,
+                                                       xaP, xaba, xabe, xhP, xhSa, xhSe, xnca, xnce,
+                                                       xnta, xnte, xpkP, xsta, xste
+   ),
+   Fr( nnte )
+   ]
+  -->
+   [
+   State_011111111111111111111111112111111111111111111( aP, aPr, aba,
+                                                        abe, hPr, hSa, hSe, hnil, k, kP, kPr, nnta,
+                                                        nnte, nta, nte, s, sPr, sa, sdP, se, sta,
+                                                        ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                        xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) event_TPMCreate_xhP__xa_011111111111111111111111112111111111111111111:
+   [
+   State_011111111111111111111111112111111111111111111( aP, aPr, aba,
+                                                        abe, hPr, hSa, hSe, hnil, k, kP, kPr, nnta,
+                                                        nnte, nta, nte, s, sPr, sa, sdP, se, sta,
+                                                        ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                        xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  --[ Event( ), TPMCreate( xhP, xa ) ]->
+   [
+   State_0111111111111111111111111121111111111111111111( aP, aPr, aba,
+                                                         abe, hPr, hSa, hSe, hnil, k, kP, kPr, nnta,
+                                                         nnte, nta, nte, s, sPr, sa, sdP, se, sta,
+                                                         ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                         xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111:
+   [
+   State_0111111111111111111111111121111111111111111111( aP, aPr, aba,
+                                                         abe, hPr, hSa, hSe, hnil, k, kP, kPr, nnta,
+                                                         nnte, nta, nte, s, sPr, sa, sdP, se, sta,
+                                                         ste, xa, xaP, xaba, xabe, xhP, xhSa, xhSe,
+                                                         xnca, xnce, xnta, xnte, xpkP, xsta, xste
+   )
+   ]
+  -->
+   [
+   Out( <nnta, nnte, pk(k), senc(<k, xa, s>, sdP)> ),
+   State_01111111111111111111111111211111111111111111111( aP, aPr,
+                                                          aba, abe, hPr, hSa, hSe, hnil, k, kP, kPr,
+                                                          nnta, nnte, nta, nte, s, sPr, sa, sdP, se,
+                                                          sta, ste, xa, xaP, xaba, xabe, xhP, xhSa,
+                                                          xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                          xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out_HMAC__xaP__xaba__xsta_____RepC____nnta__xnca____pk_k___senc__k__xa__s___sdP____01111111111111111111111111211111111111111111111:
+   [
+   State_01111111111111111111111111211111111111111111111( aP, aPr,
+                                                          aba, abe, hPr, hSa, hSe, hnil, k, kP, kPr,
+                                                          nnta, nnte, nta, nte, s, sPr, sa, sdP, se,
+                                                          sta, ste, xa, xaP, xaba, xabe, xhP, xhSa,
+                                                          xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                          xste
+   )
+   ]
+  -->
+   [
+   Out( HMAC(<xaP, xaba, xsta>,
+             <'RepC', <nnta, xnca>, pk(k), senc(<k, xa, s>, sdP)>)
+   ),
+   State_011111111111111111111111112111111111111111111111( aP, aPr,
+                                                           aba, abe, hPr, hSa, hSe, hnil, k, kP,
+                                                           kPr, nnta, nnte, nta, nte, s, sPr, sa,
+                                                           sdP, se, sta, ste, xa, xaP, xaba, xabe,
+                                                           xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                                           xpkP, xsta, xste
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Zero01111111111111111111111111211111111111112:
+   [
+   State_01111111111111111111111111211111111111112( aP, aPr, aba, abe,
+                                                    hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                    sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                    xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                    xste
+   )
+   ]
+  -->
+   [ ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Zero0111111111111111111111111121111111111112:
+   [
+   State_0111111111111111111111111121111111111112( aP, aPr, aba, abe,
+                                                   hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                   sdP, se, sta, ste, xa, xaP, xaba, xabe, xhP,
+                                                   xhSa, xhSe, xnca, xnce, xnta, xnte, xpkP, xsta,
+                                                   xste
+   )
+   ]
+  -->
+   [ ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Zero01111111111111111111111111211111112:
+   [
+   State_01111111111111111111111111211111112( aPr, aba, abe, hPr, hSa,
+                                              hSe, hnil, kPr, nta, nte, sPr, se, sta, ste, xa, xaP,
+                                              xaba, xabe, xhP, xhSa, xhSe, xnca, xnce, xnta, xnte,
+                                              xpkP, xsta, xste
+   )
+   ]
+  -->
+   [ ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in__xhP__xhSa__xnca__senc__xk__xa__xs___xsdP__011111111111111111111111112112:
+   [
+   State_011111111111111111111111112112( aPr, aba, abe, hPr, hSa, hSe,
+                                         hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   In( <xhP, xhSa, xnca, senc(<xk, xa, xs>, xsdP)> )
+   ]
+  -->
+   [
+   State_0111111111111111111111111121121( aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xhP, xhSa,
+                                          xk, xnca, xs, xsdP
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in_HMAC__xaP__xaba__xsta_____CmdL____xnca__xnta____xpkP__senc__xk__xa__xs___xsdP____0111111111111111111111111121121:
+   [
+   State_0111111111111111111111111121121( aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xhP, xhSa,
+                                          xk, xnca, xs, xsdP
+   ),
+   In( HMAC(<xaP, xaba, xsta>,
+            <'CmdL', <xnca, xnta>, xpkP, senc(<xk, xa, xs>, xsdP)>)
+   )
+   ]
+  -->
+   [
+   State_01111111111111111111111111211211( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                           xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___Session___xhSa__as_sa01111111111111111111111111211211:
+   [
+   State_01111111111111111111111111211211( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                           xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ IsIn( <'Session', xhSa>, sa ) ]->
+   [
+   State_011111111111111111111111112112111( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa, xaP,
+                                            xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___Session___xhSa__as_sa01111111111111111111111111211211:
+   [
+   State_01111111111111111111111111211211( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                           xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ IsNotSet( <'Session', xhSa> ) ]->
+   [
+   State_011111111111111111111111112112112( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, kPr, nta, nte, sPr, sta, ste, xa, xaP, xaba,
+                                            xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___Auth___xhP__as_aP011111111111111111111111112112111:
+   [
+   State_011111111111111111111111112112111( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa, xaP,
+                                            xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ IsIn( <'Auth', xhP>, aP ) ]->
+   [
+   State_0111111111111111111111111121121111( aP, aPr, aba, abe, hPr,
+                                             hSa, hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa,
+                                             xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP,
+                                             xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___Auth___xhP__as_aP011111111111111111111111112112111:
+   [
+   State_011111111111111111111111112112111( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa, xaP,
+                                            xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ IsNotSet( <'Auth', xhP> ) ]->
+   [
+   State_0111111111111111111111111121121112( aPr, aba, abe, hPr, hSa,
+                                             hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa, xaP,
+                                             xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___KeyV___xhP__as_kP0111111111111111111111111121121111:
+   [
+   State_0111111111111111111111111121121111( aP, aPr, aba, abe, hPr,
+                                             hSa, hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa,
+                                             xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP,
+                                             xsta
+   )
+   ]
+  --[ IsIn( <'KeyV', xhP>, kP ) ]->
+   [
+   State_01111111111111111111111111211211111( aP, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa, sta, ste,
+                                              xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                              xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___KeyV___xhP__as_kP0111111111111111111111111121121111:
+   [
+   State_0111111111111111111111111121121111( aP, aPr, aba, abe, hPr,
+                                             hSa, hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa,
+                                             xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP,
+                                             xsta
+   )
+   ]
+  --[ IsNotSet( <'KeyV', xhP> ) ]->
+   [
+   State_01111111111111111111111111211211112( aP, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kPr, nta, nte, sPr, sa, sta, ste, xa,
+                                              xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs, xsdP,
+                                              xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___SeedV___xhP__as_sdP01111111111111111111111111211211111:
+   [
+   State_01111111111111111111111111211211111( aP, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa, sta, ste,
+                                              xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                              xsdP, xsta
+   )
+   ]
+  --[ IsIn( <'SeedV', xhP>, sdP ) ]->
+   [
+   State_011111111111111111111111112112111111( aP, aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa, sdP, sta,
+                                               ste, xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP,
+                                               xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___SeedV___xhP__as_sdP01111111111111111111111111211211111:
+   [
+   State_01111111111111111111111111211211111( aP, aPr, aba, abe, hPr,
+                                              hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa, sta, ste,
+                                              xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                              xsdP, xsta
+   )
+   ]
+  --[ IsNotSet( <'SeedV', xhP> ) ]->
+   [
+   State_011111111111111111111111112112111112( aP, aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa, sta, ste,
+                                               xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                               xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) if_eq_sa___xnta__xaba__xsta__011111111111111111111111112112111111:
+   [
+   State_011111111111111111111111112112111111( aP, aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa, sdP, sta,
+                                               ste, xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP,
+                                               xs, xsdP, xsta
+   )
+   ]
+  --[ Pred_eq( sa, <xnta, xaba, xsta> ) ]->
+   [
+   State_0111111111111111111111111121121111111( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__if_eq_sa___xnta__xaba__xsta__011111111111111111111111112112111111:
+   [
+   State_011111111111111111111111112112111111( aP, aPr, aba, abe, hPr,
+                                               hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa, sdP, sta,
+                                               ste, xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta, xpkP,
+                                               xs, xsdP, xsta
+   )
+   ]
+  --[ Pred_not_eq( sa, <xnta, xaba, xsta> ) ]->
+   [
+   State_0111111111111111111111111121121111112( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) if_eq__pk_kP___aP__sdP____xpkP__xaP__xsdP__0111111111111111111111111121121111111:
+   [
+   State_0111111111111111111111111121121111111( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ Pred_eq( <pk(kP), aP, sdP>, <xpkP, xaP, xsdP> ) ]->
+   [
+   State_01111111111111111111111111211211111111( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                 sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                 xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__if_eq__pk_kP___aP__sdP____xpkP__xaP__xsdP__0111111111111111111111111121121111111:
+   [
+   State_0111111111111111111111111121121111111( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ Pred_not_eq( <pk(kP), aP, sdP>, <xpkP, xaP, xsdP> ) ]->
+   [
+   State_01111111111111111111111111211211111112( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                 sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                 xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_h01111111111111111111111111211211111111:
+   [
+   State_01111111111111111111111111211211111111( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                 sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                 xnta, xpkP, xs, xsdP, xsta
+   ),
+   Fr( h )
+   ]
+  -->
+   [
+   State_011111111111111111111111112112111111111( aP, aPr, aba, abe,
+                                                  h, hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr,
+                                                  sa, sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk,
+                                                  xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nnta011111111111111111111111112112111111111:
+   [
+   State_011111111111111111111111112112111111111( aP, aPr, aba, abe,
+                                                  h, hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr,
+                                                  sa, sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk,
+                                                  xnca, xnta, xpkP, xs, xsdP, xsta
+   ),
+   Fr( nnta )
+   ]
+  -->
+   [
+   State_0111111111111111111111111121121111111111( aP, aPr, aba, abe,
+                                                   h, hPr, hSa, hSe, hnil, kP, kPr, nnta, nta, nte,
+                                                   sPr, sa, sdP, sta, ste, xa, xaP, xaba, xhP, xhSa,
+                                                   xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) event_ObjSeed_xs_0111111111111111111111111121121111111111:
+   [
+   State_0111111111111111111111111121121111111111( aP, aPr, aba, abe,
+                                                   h, hPr, hSa, hSe, hnil, kP, kPr, nnta, nta, nte,
+                                                   sPr, sa, sdP, sta, ste, xa, xaP, xaba, xhP, xhSa,
+                                                   xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ Event( ), ObjSeed( xs ) ]->
+   [
+   State_01111111111111111111111111211211111111111( aP, aPr, aba, abe,
+                                                    h, hPr, hSa, hSe, hnil, kP, kPr, nnta, nta, nte,
+                                                    sPr, sa, sdP, sta, ste, xa, xaP, xaba, xhP,
+                                                    xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) event_TPMLoad_xhP__h__xa_01111111111111111111111111211211111111111:
+   [
+   State_01111111111111111111111111211211111111111( aP, aPr, aba, abe,
+                                                    h, hPr, hSa, hSe, hnil, kP, kPr, nnta, nta, nte,
+                                                    sPr, sa, sdP, sta, ste, xa, xaP, xaba, xhP,
+                                                    xhSa, xk, xnca, xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  --[ Event( ), TPMLoad( xhP, h, xa ) ]->
+   [
+   State_011111111111111111111111112112111111111111( aP, aPr, aba,
+                                                     abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                     nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                     xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                     xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___Auth___h__xa011111111111111111111111112112111111111111:
+   [
+   State_011111111111111111111111112112111111111111( aP, aPr, aba,
+                                                     abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                     nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                     xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                     xsdP, xsta
+   )
+   ]
+  --[ Insert( <'Auth', h>, xa ) ]->
+   [
+   State_0111111111111111111111111121121111111111111( aP, aPr, aba,
+                                                      abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                      nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                      xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                      xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___KeyV___h__xk0111111111111111111111111121121111111111111:
+   [
+   State_0111111111111111111111111121121111111111111( aP, aPr, aba,
+                                                      abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                      nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                      xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                      xsdP, xsta
+   )
+   ]
+  --[ Insert( <'KeyV', h>, xk ) ]->
+   [
+   State_01111111111111111111111111211211111111111111( aP, aPr, aba,
+                                                       abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                       nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                       xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                       xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___SeedV___h__xs01111111111111111111111111211211111111111111:
+   [
+   State_01111111111111111111111111211211111111111111( aP, aPr, aba,
+                                                       abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                       nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                       xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                       xsdP, xsta
+   )
+   ]
+  --[ Insert( <'SeedV', h>, xs ) ]->
+   [
+   State_011111111111111111111111112112111111111111111( aP, aPr, aba,
+                                                        abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                        nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                        xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                        xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__nnta__pk_xk___h_011111111111111111111111112112111111111111111:
+   [
+   State_011111111111111111111111112112111111111111111( aP, aPr, aba,
+                                                        abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                        nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                        xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                        xsdP, xsta
+   )
+   ]
+  -->
+   [
+   Out( <nnta, pk(xk), h> ),
+   State_0111111111111111111111111121121111111111111111( aP, aPr, aba,
+                                                         abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                         nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                         xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                         xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out_HMAC__xaP__xaba__xsta_____RepL____nnta__xnca____pk_xk___h___0111111111111111111111111121121111111111111111:
+   [
+   State_0111111111111111111111111121121111111111111111( aP, aPr, aba,
+                                                         abe, h, hPr, hSa, hSe, hnil, kP, kPr, nnta,
+                                                         nta, nte, sPr, sa, sdP, sta, ste, xa, xaP,
+                                                         xaba, xhP, xhSa, xk, xnca, xnta, xpkP, xs,
+                                                         xsdP, xsta
+   )
+   ]
+  -->
+   [
+   Out( HMAC(<xaP, xaba, xsta>, <'RepL', <nnta, xnca>, pk(xk), h>) ),
+   State_01111111111111111111111111211211111111111111111( aP, aPr,
+                                                          aba, abe, h, hPr, hSa, hSe, hnil, kP, kPr,
+                                                          nnta, nta, nte, sPr, sa, sdP, sta, ste,
+                                                          xa, xaP, xaba, xhP, xhSa, xk, xnca, xnta,
+                                                          xpkP, xs, xsdP, xsta
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Zero01111111111111111111111111211211111112:
+   [
+   State_01111111111111111111111111211211111112( aP, aPr, aba, abe,
+                                                 hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                 sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                 xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  -->
+   [ ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) Zero0111111111111111111111111121121111112:
+   [
+   State_0111111111111111111111111121121111112( aP, aPr, aba, abe,
+                                                hPr, hSa, hSe, hnil, kP, kPr, nta, nte, sPr, sa,
+                                                sdP, sta, ste, xa, xaP, xaba, xhP, xhSa, xk, xnca,
+                                                xnta, xpkP, xs, xsdP, xsta
+   )
+   ]
+  -->
+   [ ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) in__xhb__xst_01111111111111111111111111212:
+   [
+   State_01111111111111111111111111212( aPr, aba, abe, hPr, hSa, hSe,
+                                        hnil, kPr, nta, nte, sPr, sta, ste
+   ),
+   In( <xhb, xst> )
+   ]
+  -->
+   [
+   State_011111111111111111111111112121( aPr, aba, abe, hPr, hSa, hSe,
+                                         hnil, kPr, nta, nte, sPr, sta, ste, xhb, xst
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_hs011111111111111111111111112121:
+   [
+   State_011111111111111111111111112121( aPr, aba, abe, hPr, hSa, hSe,
+                                         hnil, kPr, nta, nte, sPr, sta, ste, xhb, xst
+   ),
+   Fr( hs )
+   ]
+  -->
+   [
+   State_0111111111111111111111111121211( aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, hs, kPr, nta, nte, sPr, sta, ste, xhb, xst
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) new_nt0111111111111111111111111121211:
+   [
+   State_0111111111111111111111111121211( aPr, aba, abe, hPr, hSa,
+                                          hSe, hnil, hs, kPr, nta, nte, sPr, sta, ste, xhb, xst
+   ),
+   Fr( nt )
+   ]
+  -->
+   [
+   State_01111111111111111111111111212111( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste, xhb, xst
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) lookup___Auth___xhb__as_ab01111111111111111111111111212111:
+   [
+   State_01111111111111111111111111212111( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste, xhb, xst
+   )
+   ]
+  --[ IsIn( <'Auth', xhb>, ab ) ]->
+   [
+   State_011111111111111111111111112121111( aPr, ab, aba, abe, hPr,
+                                            hSa, hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste,
+                                            xhb, xst
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) else__lookup___Auth___xhb__as_ab01111111111111111111111111212111:
+   [
+   State_01111111111111111111111111212111( aPr, aba, abe, hPr, hSa,
+                                           hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste, xhb, xst
+   )
+   ]
+  --[ IsNotSet( <'Auth', xhb> ) ]->
+   [
+   State_011111111111111111111111112121112( aPr, aba, abe, hPr, hSa,
+                                            hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste, xhb,
+                                            xst
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) insert___Session___hs___nt__ab__xst_011111111111111111111111112121111:
+   [
+   State_011111111111111111111111112121111( aPr, ab, aba, abe, hPr,
+                                            hSa, hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste,
+                                            xhb, xst
+   )
+   ]
+  --[ Insert( <'Session', hs>, <nt, ab, xst> ) ]->
+   [
+   State_0111111111111111111111111121211111( aPr, ab, aba, abe, hPr,
+                                             hSa, hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste,
+                                             xhb, xst
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+rule (modulo E) out__hs__nt_0111111111111111111111111121211111:
+   [
+   State_0111111111111111111111111121211111( aPr, ab, aba, abe, hPr,
+                                             hSa, hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste,
+                                             xhb, xst
+   )
+   ]
+  -->
+   [
+   Out( <hs, nt> ),
+   State_01111111111111111111111111212111111( aPr, ab, aba, abe, hPr,
+                                              hSa, hSe, hnil, hs, kPr, nt, nta, nte, sPr, sta, ste,
+                                              xhb, xst
+   )
+   ]
+
+  /* has exactly the trivial AC variant */
+
+axiom single_session:
+  "∀ #i #j. ((Init( ) @ #i) ∧ (Init( ) @ #j)) ⇒ (#i = #j)"
+  // safety formula
+
+axiom set_in:
+  "∀ x y #t3.
+    (IsIn( x, y ) @ #t3) ⇒
+    (∃ #t2.
+      (((Insert( x, y ) @ #t2) ∧ (#t2 < #t3)) ∧
+       (∀ #t1. (Delete( x ) @ #t1) ⇒ ((#t1 < #t2) ∨ (#t3 < #t1)))) ∧
+      (∀ #t1 yp.
+        (Insert( x, yp ) @ #t1) ⇒
+        (((#t1 < #t2) ∨ (#t1 = #t2)) ∨ (#t3 < #t1))))"
+
+axiom set_notin:
+  "∀ x #t3.
+    (IsNotSet( x ) @ #t3) ⇒
+    ((∀ #t1 y. (Insert( x, y ) @ #t1) ⇒ (#t3 < #t1)) ∨
+     (∃ #t1.
+       ((Delete( x ) @ #t1) ∧ (#t1 < #t3)) ∧
+       (∀ #t2 y. ((Insert( x, y ) @ #t2) ∧ (#t2 < #t3)) ⇒ (#t2 < #t1))))"
+
+axiom predicate_not_eq:
+  "∀ #i a b. (Pred_not_eq( a, b ) @ #i) ⇒ (¬(a = b))"
+  // safety formula
+
+axiom predicate_eq:
+  "∀ #i a b. (Pred_eq( a, b ) @ #i) ⇒ (a = b)"
+  // safety formula
+
+axiom immeadiate_in:
+  "∀ x #t3.
+    (ChannelInEvent( x ) @ #t3) ⇒
+    (∃ #t2.
+      (((K( x ) @ #t2) ∧ (#t2 < #t3)) ∧
+       (∀ #t0. (Event( ) @ #t0) ⇒ ((#t0 < #t2) ∨ (#t3 < #t0)))) ∧
+      (∀ #t0 xp.
+        (K( xp ) @ #t0) ⇒ (((#t0 < #t2) ∨ (#t0 = #t2)) ∨ (#t3 < #t0))))"
+
+axiom locking:
+  "∀ l x lp #t1 #t3.
+    ((Lock( l, x ) @ #t1) ∧ (Lock( lp, x ) @ #t3)) ⇒
+    ((((#t1 < #t3) ∧
+       (∃ #t2.
+         (((((Unlock( l, x ) @ #t2) ∧ (#t1 < #t2)) ∧ (#t2 < #t3)) ∧
+           (∀ #t0. (Unlock( l, x ) @ #t0) ⇒ (#t0 = #t2))) ∧
+          (∀ lp.1 #t0.
+            (Lock( lp.1, x ) @ #t0) ⇒
+            (((#t0 < #t1) ∨ (#t0 = #t1)) ∨ (#t2 < #t0)))) ∧
+         (∀ lp.1 #t0.
+           (Unlock( lp.1, x ) @ #t0) ⇒
+           (((#t0 < #t1) ∨ (#t2 < #t0)) ∨ (#t2 = #t0))))) ∨
+      (#t3 < #t1)) ∨
+     (#t1 = #t3))"
+
+lemma Secrecy [use_induction, reuse]:
+  all-traces "¬(∃ #i #j s. (ObjSeed( s ) @ #i) ∧ (!KU( s ) @ #j))"
+/*
+guarded formula characterizing all counter-examples:
+"∃ #i #j s. (ObjSeed( s ) @ #i) ∧ (!KU( s ) @ #j)"
+*/
+induction
+  case empty_trace
+  by contradiction
+next
+  case non_empty_trace
+  simplify
+  solve( (∀ #i #j s.
+           (ObjSeed( s ) @ #i) ∧ (!KU( s ) @ #j) ⇒ (last(#j)) ∨ (last(#i)))  ∥
+         (∃ x y #t3.
+           (IsIn( x, y ) @ #t3)
+          ∧
+           (¬(last(#t3))) ∧
+           (∀ #t2.
+             (Insert( x, y ) @ #t2)
+            ⇒
+             (last(#t2)) ∨
+             (#t2 = #t3) ∨
+             (#t3 < #t2) ∨
+             (∃ #t1.
+               (Delete( x ) @ #t1)
+              ∧
+               (¬(last(#t1))) ∧
+               ((#t1 = #t2) ∨ (#t2 < #t1)) ∧
+               ((#t3 = #t1) ∨ (#t1 < #t3))) ∨
+             (∃ #t1 yp.
+               (Insert( x, yp ) @ #t1)
+              ∧
+               (¬(last(#t1))) ∧
+               ((#t1 = #t2) ∨ (#t2 < #t1)) ∧
+               (¬(#t1 = #t2)) ∧
+               ((#t3 = #t1) ∨ (#t1 < #t3)))))  ∥
+         (∃ x #t3.
+           (IsNotSet( x ) @ #t3)
+          ∧
+           (¬(last(#t3))) ∧
+           (∃ #t1 y.
+             (Insert( x, y ) @ #t1)
+            ∧
+             (¬(last(#t1))) ∧ ((#t3 = #t1) ∨ (#t1 < #t3))) ∧
+           (∀ #t1.
+             (Delete( x ) @ #t1)
+            ⇒
+             (last(#t1)) ∨
+             (#t1 = #t3) ∨
+             (#t3 < #t1) ∨
+             (∃ #t2 y.
+               (Insert( x, y ) @ #t2)
+              ∧
+               (¬(last(#t2))) ∧ (#t2 < #t3) ∧ ((#t2 = #t1) ∨ (#t1 < #t2)))))  ∥
+         (∃ x #t3.
+           (ChannelInEvent( x ) @ #t3)
+          ∧
+           (¬(last(#t3))) ∧
+           (∀ #t2.
+             (K( x ) @ #t2)
+            ⇒
+             (last(#t2)) ∨
+             (#t2 = #t3) ∨
+             (#t3 < #t2) ∨
+             (∃ #t0.
+               (Event( ) @ #t0)
+              ∧
+               (¬(last(#t0))) ∧
+               ((#t0 = #t2) ∨ (#t2 < #t0)) ∧
+               ((#t3 = #t0) ∨ (#t0 < #t3))) ∨
+             (∃ #t0 xp.
+               (K( xp ) @ #t0)
+              ∧
+               (¬(last(#t0))) ∧
+               ((#t0 = #t2) ∨ (#t2 < #t0)) ∧
+               (¬(#t0 = #t2)) ∧
+               ((#t3 = #t0) ∨ (#t0 < #t3)))))  ∥
+         (∃ l x lp #t1 #t3.
+           (Lock( l, x ) @ #t1) ∧ (Lock( lp, x ) @ #t3)
+          ∧
+           (¬(last(#t3))) ∧
+           (¬(last(#t1))) ∧
+           ((#t1 = #t3) ∨
+            (#t3 < #t1) ∨
+            (∀ #t2.
+              (Unlock( l, x ) @ #t2)
+             ⇒
+              (last(#t2)) ∨
+              (#t1 = #t2) ∨
+              (#t2 < #t1) ∨
+              (#t2 = #t3) ∨
+              (#t3 < #t2) ∨
+              (∃ #t0. (Unlock( l, x ) @ #t0) ∧ (¬(last(#t0))) ∧ (¬(#t0 = #t2))) ∨
+              (∃ lp.1 #t0.
+                (Lock( lp.1, x ) @ #t0)
+               ∧
+                (¬(last(#t0))) ∧
+                ((#t0 = #t1) ∨ (#t1 < #t0)) ∧
+                (¬(#t0 = #t1)) ∧
+                ((#t2 = #t0) ∨ (#t0 < #t2))) ∨
+              (∃ lp.1 #t0.
+                (Unlock( lp.1, x ) @ #t0)
+               ∧
+                (¬(last(#t0))) ∧
+                ((#t0 = #t1) ∨ (#t1 < #t0)) ∧
+                ((#t2 = #t0) ∨ (#t0 < #t2)) ∧
+                (¬(#t2 = #t0))))) ∧
+           ((#t3 = #t1) ∨ (#t1 < #t3)) ∧
+           (¬(#t1 = #t3))) )
+    case case_1
+    solve( (last(#j))  ∥ (last(#i)) )
+      case case_1
+      solve( ObjSeed( s ) @ #i )
+        case event_ObjSeed_sPr_0111111111111111111111
+        by sorry
+      next
+        case event_ObjSeed_xs_0111111111111111111111111121121111111111
+        solve( State_0111111111111111111111111121121111111111( aP, aPr,
+                                                               aba, abe, h, hPr, hSa, hSe, hnil, kP,
+                                                               kPr, nnta, nta, nte, sPr, sa, sdP,
+                                                               sta, ste, xa, xaP, xaba, xhP, xhSa,
+                                                               xk, xnca, xnta, xpkP, s, xsdP, xsta
+               ) ▶₀ #i )
+          case new_nnta011111111111111111111111112112111111111
+          solve( !KU( senc(<xk, xa, s>, sdP) ) @ #vk.7 )
+            case csenc
+            by contradiction
+          next
+            case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_1
+            solve( !KU( ~n.16 ) @ #j )
+              case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_1
+              solve( Insert( <'SeedV', xhP.2>, sdP.1 ) @ #t2.9 )
+                case insert___SeedV___hPr__sPr011111111111111111111
+                solve( State_011111111111111111111( aPr, aba, abe, xhP.1, hSa, hSe,
+                                                    hnil, kPr, nta, nte, sdP.1, sta, ste
+                       ) ▶₀ #t2 )
+                  case insert___KeyV___hPr__kPr01111111111111111111
+                  by sorry
+                qed
+              next
+                case insert___SeedV___h__xs01111111111111111111111111211211111111111111
+                by sorry
+              qed
+            next
+              case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_2
+              solve( Insert( <'SeedV', xhP.1>, sdP ) @ #t2.4 )
+                case insert___SeedV___hPr__sPr011111111111111111111
+                by sorry
+              next
+                case insert___SeedV___h__xs01111111111111111111111111211211111111111111
+                by sorry
+              qed
+            qed
+          next
+            case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_2
+            solve( Insert( <'SeedV', xhP.1>, sdP.1 ) @ #t2.4 )
+              case insert___SeedV___hPr__sPr011111111111111111111
+              by sorry
+            next
+              case insert___SeedV___h__xs01111111111111111111111111211211111111111111
+              by sorry
+            qed
+          qed
+        qed
+      qed
+    next
+      case case_2
+      solve( ObjSeed( s ) @ #i )
+        case event_ObjSeed_sPr_0111111111111111111111
+        by sorry
+      next
+        case event_ObjSeed_xs_0111111111111111111111111121121111111111
+        solve( State_0111111111111111111111111121121111111111( aP, aPr,
+                                                               aba, abe, h, hPr, hSa, hSe, hnil, kP,
+                                                               kPr, nnta, nta, nte, sPr, sa, sdP,
+                                                               sta, ste, xa, xaP, xaba, xhP, xhSa,
+                                                               xk, xnca, xnta, xpkP, s, xsdP, xsta
+               ) ▶₀ #i )
+          case new_nnta011111111111111111111111112112111111111
+          solve( !KU( senc(<xk, xa, s>, sdP) ) @ #vk.7 )
+            case csenc
+            by sorry
+          next
+            case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_1
+            solve( !KU( ~n.16 ) @ #j )
+              case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_1
+              solve( Insert( <'SeedV', xhP.2>, sdP.1 ) @ #t2.9 )
+                case insert___SeedV___hPr__sPr011111111111111111111
+                by sorry /* removed */
+              next
+                case insert___SeedV___h__xs01111111111111111111111111211211111111111111
+                by sorry /* removed */
+              qed
+            next
+              case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_2
+              solve( Insert( <'SeedV', xhP.1>, sdP ) @ #t2.4 )
+                case insert___SeedV___hPr__sPr011111111111111111111
+                by sorry /* removed */
+              next
+                case insert___SeedV___h__xs01111111111111111111111111211211111111111111
+                by sorry /* removed */
+              qed
+            qed
+          next
+            case out__nnta__nnte__pk_k___senc__k__xa__s___sdP__0111111111111111111111111121111111111111111111_case_2
+            solve( Insert( <'SeedV', xhP.1>, sdP.1 ) @ #t2.4 )
+              case insert___SeedV___hPr__sPr011111111111111111111
+              by sorry
+            next
+              case insert___SeedV___h__xs01111111111111111111111111211211111111111111
+              by sorry
+            qed
+          qed
+        qed
+      qed
+    qed
+  next
+    case case_2
+    by sorry
+  next
+    case case_3
+    by sorry
+  next
+    case case_4
+    by sorry
+  next
+    case case_5
+    by sorry
+  qed
+qed
+
+lemma NewAuthSec:
+  all-traces "¬(∃ #i #j a. (NewAuth( a ) @ #i) ∧ (!KU( a ) @ #j))"
+/*
+guarded formula characterizing all counter-examples:
+"∃ #i #j a. (NewAuth( a ) @ #i) ∧ (!KU( a ) @ #j)"
+*/
+by sorry
+
+lemma CorUTCreate:
+  all-traces
+  "∀ hP a #t1.
+    (UserCreate( hP, a ) @ #t1) ⇒
+    (∃ #t2. (TPMCreate( hP, a ) @ #t2) ∧ (#t2 < #t1))"
+/*
+guarded formula characterizing all counter-examples:
+"∃ hP a #t1.
+  (UserCreate( hP, a ) @ #t1)
+ ∧
+  ∀ #t2. (TPMCreate( hP, a ) @ #t2) ⇒ ¬(#t2 < #t1)"
+*/
+by sorry /* removed */
+
+lemma CorUTLoad:
+  all-traces
+  "∀ hO hP a #t1.
+    (UserLoad( hP, hO, a ) @ #t1) ⇒
+    (∃ #t2. (TPMLoad( hP, hO, a ) @ #t2) ∧ (#t2 < #t1))"
+/*
+guarded formula characterizing all counter-examples:
+"∃ hO hP a #t1.
+  (UserLoad( hP, hO, a ) @ #t1)
+ ∧
+  ∀ #t2. (TPMLoad( hP, hO, a ) @ #t2) ⇒ ¬(#t2 < #t1)"
+*/
+by sorry /* removed */
+
+/*
+WARNING: the following wellformedness checks failed!
+
+unbound:
+  rule `lookup___Session___xhSe__as_se011111111111111111111111112111111' has unbound variables: 
+    se
+  
+  rule `lookup___Session___xhSa__as_sa01111111111111111111111111211111111' has unbound variables: 
+    sa
+  
+  rule `lookup___Auth___xhP__as_aP011111111111111111111111112111111111' has unbound variables: 
+    aP
+  
+  rule `lookup___KeyV___xhP__as_kP0111111111111111111111111121111111111' has unbound variables: 
+    kP
+  
+  rule `lookup___SeedV___xhP__as_sdP01111111111111111111111111211111111111' has unbound variables: 
+    sdP
+  
+  rule `lookup___Session___xhSa__as_sa01111111111111111111111111211211' has unbound variables: 
+    sa
+  
+  rule `lookup___Auth___xhP__as_aP011111111111111111111111112112111' has unbound variables: 
+    aP
+  
+  rule `lookup___KeyV___xhP__as_kP0111111111111111111111111121121111' has unbound variables: 
+    kP
+  
+  rule `lookup___SeedV___xhP__as_sdP01111111111111111111111111211211111' has unbound variables: 
+    sdP
+  
+  rule `lookup___Auth___xhb__as_ab01111111111111111111111111212111' has unbound variables: 
+    ab
+*/
+
+end

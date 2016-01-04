@@ -1,0 +1,107 @@
+theory apiHBA2
+
+begin
+
+functions: HMAC/2, KDF/1
+builtins: symmetric-encryption, asymmetric-encryption
+
+//load auth-session
+new hSa; new nta; new aba; new sta; 
+insert <'Session', hSa>, <nta,aba,sta>;
+out(<hSa, nta>);
+//load enc-session
+new hSe; new nte; new abe; new ste; 
+insert <'Session', hSe>, <nte,abe,ste>;
+out(<hSe, nte>);
+//creat nil object
+new hnil;
+insert <'Auth',hnil>, 'null';
+//TPM2_CreatePrimary
+new hPr; new aPr; new kPr; new sPr; 
+insert <'Auth', hPr>, aPr;
+insert <'KeyV', hPr>, kPr;
+insert <'SeedV', hPr>, sPr;
+event ObjSeed(sPr);
+out(<hPr, pk(kPr), aPr>);
+//LeakSK
+//out(<aba,sta>);
+out(<abe,ste>);
+//out(<aba,abe>);
+!(  (//Chal	
+	new a;event NewAuth(a); new nce; new nca;
+	out(<nca,nce,senc(a, KDF(<nce, nte, abe, ste>))>);
+	out(HMAC(<aPr,aba,sta>,<'CmdC',<nca,<nta,nte>>,<pk(kPr),senc(a, KDF(<nce, nte, abe, ste>))>>));
+	in(<xkBlob,xpbk,xnta,xnte,xahC>);
+	if xahC = HMAC(<aPr,aba,sta>,<'RepC',<xnta,nca>,<xpbk,xkBlob>>) then
+		event UserCreate(hPr,a);
+		new nnca;out(nnca);		
+		out(HMAC(<aPr,aba,sta>,<'CmdL',<nnca,nta>,<pk(kPr),xkBlob>>));
+		in(<xhO,xahL,xnnta>);
+		if xahL = HMAC(<aPr,aba,sta>,<'RepL',<xnnta,nnca>,<xpbk,xhO>>) then
+			event UserLoad(hPr,xhO,a)
+    )||
+    !(	
+	(//TPM2_Create
+	in(<xhSe,xnce,senc(xa, KDF(<xnce,xnte,xabe,xste>))>);
+	in(<xhP,xhSa,xnca>);
+	in(HMAC(<xaP,xaba,xsta>,<'CmdC',<xnca,<xnta,xnte>>,<xpkP,senc(xa, KDF(<xnce,xnte,xabe,xste>))>>));
+//auth-part
+	lookup <'Session', xhSe> as se in
+	if se = <xnte,xabe,xste> then
+	lookup <'Session', xhSa> as sa in
+
+	lookup <'Auth', xhP> as aP in
+	lookup <'KeyV', xhP> as kP in
+	lookup <'SeedV', xhP> as sdP in
+	if sa = <xnta,xaba,xsta> then
+	if <pk(kP),aP> = <xpkP,xaP> then
+//func-part
+		new k; new s; new nnta; new nnte; event TPMCreate(xhP,xa);
+	  	out(<nnta, nnte, pk(k), senc(<k,xa,s>,sdP)>);
+		out(HMAC(<xaP,xaba,xsta>,<'RepC',<nnta,xnca>,<pk(k),senc(<k,xa,s>,sdP)>>))
+	)||
+	(//TPM2_Load
+	in(<xhP,xhSa,xnca,senc(<xk, xa, xs>, xsdP)>);
+	in(HMAC(<xaP,xaba,xsta>,<'CmdL',<xnca,xnta>,<xpkP,senc(<xk, xa, xs>, xsdP)>>));
+//auth-part
+	lookup <'Session', xhSa> as sa in
+	
+	lookup <'Auth', xhP> as aP in
+	lookup <'KeyV', xhP> as kP in
+	lookup <'SeedV', xhP> as sdP in
+
+	if sa = <xnta,xaba,xsta> then
+	if <pk(kP),aP,sdP> = <xpkP,xaP,xsdP> then
+//func-part
+		
+		new h; new nnta; event ObjSeed(xs);
+		event TPMLoad(xhP, h, xa);
+		insert <'Auth', h>, xa;
+		insert <'KeyV', h>, xk;
+		insert <'SeedV', h>, xs;
+		out(<nnta,pk(xk),h>);
+		out(HMAC(<xaP, xaba, xsta>, <'RepL', <nnta, xnca>,<pk(xk),h>>))
+	)||
+	( //TPM2_StartAuthSession
+	in(<xhb, xst>);	new hs; new nt;
+	lookup <'Auth',xhb> as ab in
+	insert <'Session', hs>, <nt,ab,xst>;
+	out(<hs, nt>)
+	)
+    )
+)
+
+
+
+lemma Secrecy[use_induction, reuse]:
+	"not (Ex #i #j s. ObjSeed(s)@i & KU(s)@j )"
+lemma NewAuthSec:
+	"not (Ex #i #j a. NewAuth(a)@i & KU(a)@j )"
+lemma CorUTCreate:
+	"All hP a #t1. UserCreate(hP, a)@t1 ==>( Ex #t2. TPMCreate(hP, a)@t2 & t2 < t1)"
+lemma CorUTLoad:
+	"All hO hP a #t1. UserLoad(hP, hO, a)@t1 ==>( Ex #t2. TPMLoad(hP, hO, a)@t2 & t2 < t1)"
+end
+
+
+

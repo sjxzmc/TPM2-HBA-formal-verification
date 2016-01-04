@@ -1,0 +1,3 @@
+The files apiHBA-C1.apip, apiHBA-C2.apip and apiHBA-C3.apip are the SAPIC scripts of the formal models of HMAC based authorization mechanisms in Case 1-3. They can be translated into the tamarin-prover scripts.
+
+The other files are the proof transcripts of the formal verification. We divide the manual part from the whole proofs to count selections for the part that needs human intervetion. Every "sorry" branches in the manual part can be automatically verified by the tamarin-prover.
